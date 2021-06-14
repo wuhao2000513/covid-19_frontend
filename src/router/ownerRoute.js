@@ -1,7 +1,6 @@
 import Layout from "@/layout/CovidLayout";
-import HotspotMan from "./config/hotspotManage";
 import Person from "./config/person-info";
-import Qrcode from "./config/qrcode";
+import Record from "./config/checkinRecord";
 const baseRoute = {
   path: "/",
   name: "Home",
@@ -10,7 +9,7 @@ const baseRoute = {
   meta: {
     title: "home"
   },
-  children: [HotspotMan, Qrcode, Person]
+  children: [Record, Person]
 };
 
 export default [baseRoute];

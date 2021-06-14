@@ -40,6 +40,7 @@ class DrawingManager {
     this.map = map;
     this.DM = null;
     this.currentShap = null;
+    this.shapArr = [];
     this.option = Object.assign(defaultOption, option);
     // 初始化地图绘图工具
     this.init();
@@ -108,10 +109,37 @@ class DrawingManager {
   clear() {
     this.currentShap && this.currentShap.setMap(null);
   }
+  clearAll() {
+    this.shapArr.forEach(shap => {
+      shap.setMap(null);
+    });
+    this.shapArr = [];
+  }
+  // fitBounds
+  setFitBound(dataArr, isCircle) {
+    let bounds = new window.google.maps.LatLngBounds();
+    dataArr.forEach(item => {
+      const data = item.data;
+      if (isCircle) {
+        let currentShap = new window.google.maps.Circle(
+          Object.assign(polyOptions, {
+            radius: parseFloat(data[0].radius),
+            center: data[0]
+          })
+        );
+        console.log(data, currentShap.getBounds(), "yuanxing");
+        this.map.fitBounds(currentShap.getBounds());
+      } else {
+        data.forEach(LatLng => {
+          bounds.extend(LatLng);
+        });
+      }
+    });
+    !isCircle && this.map.fitBounds(bounds);
+  }
   //在地图上画图形
   draw({ type, data }) {
     const position = data;
-    console.log(type, data);
     this.DM.setDrawingMode(type);
     switch (type) {
       case "polygon":
@@ -123,7 +151,6 @@ class DrawingManager {
             map: this.map
           })
         );
-        // this.map.setMapCenter(position[0]);
         break;
       case "circle":
         this.currentShap = new window.google.maps.Circle(
@@ -135,7 +162,7 @@ class DrawingManager {
         );
         break;
     }
-    // this.map.fitBounds(data);
+    this.shapArr.push(this.currentShap);
   }
 }
 

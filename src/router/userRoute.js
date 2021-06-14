@@ -2,8 +2,8 @@
 
 import Layout from "@/layout/CovidLayout";
 
-import Hotspot from "./hotspot";
-import Person from "./person-info";
+import Hotspot from "./config/hotspot";
+import Person from "./config/person-info";
 
 const baseRoute = {
   path: "/",

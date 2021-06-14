@@ -51,7 +51,7 @@ const actions = {
           Vue.ls.set("userInfo", response);
           commit("SET_USER_INFO", response);
           commit("ADD_ROUTES", response.role);
-          resolve();
+          resolve(response);
         })
         .catch(error => {
           reject(error);
@@ -71,9 +71,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       const userInfo = Vue.ls.get("userInfo");
       if (userInfo) {
-        commit("SET_USER_INFO", userInfo);
-        commit("ADD_ROUTES", userInfo.role);
-        resolve();
+        getUser(userInfo.id).then(res => {
+          commit("SET_USER_INFO", res);
+          commit("ADD_ROUTES", res.role);
+          resolve();
+        });
       } else {
         reject("获取用户信息失败");
       }

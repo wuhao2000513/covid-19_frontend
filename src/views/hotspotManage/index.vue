@@ -10,7 +10,20 @@
         :total="count"
         :tableData="tableData"
         @getData="getData"
-      ></Table>
+      >
+        <template v-slot:action="{ row }">
+          <el-button type="text" @click="view(row)">
+            view
+          </el-button>
+          <el-popconfirm title="Are you sure?" @confirm="del(row)">
+            <template v-slot:reference>
+              <el-button type="text" size="mini" style="margin-left:8px"
+                >delete</el-button
+              >
+            </template>
+          </el-popconfirm>
+        </template>
+      </Table>
     </div>
   </div>
 </template>
@@ -40,6 +53,10 @@ export default {
         {
           attr: { prop: "crateAt", label: "crate at", type: "date" },
         },
+        {
+          attr: { label: "action" },
+          slot: "action",
+        },
       ],
     };
   },
@@ -50,15 +67,21 @@ export default {
     getData() {
       const paging = this.$refs.table.paging();
       Api.get(paging).then((res) => {
-        this.count = res.count;
-        this.tableData = res.rows.map((item) => {
-          item.data = JSON.parse(item.data);
-          //在地图上画图形
-          this.drawingManager.draw(item);
-          return item;
+        this.drawingManager.clearAll();
+        this.$nextTick(() => {
+          this.count = res.count;
+          this.tableData = res.rows.map((item) => {
+            item.data = JSON.parse(item.data);
+            //在地图上画图形
+            this.drawingManager.draw(item);
+            return item;
+          });
+          console.log(this.drawingManager);
+          this.drawingManager.setFitBound(this.tableData);
         });
       });
     },
+    //绘图完成 回调
     overlayComplete(type, bounds) {
       this.$prompt("Please enter a name", "", {
         inputPattern: /\w+/,
@@ -78,6 +101,19 @@ export default {
           //取消提交
           this.getData();
         });
+    },
+    //查看
+    view(row) {
+      console.log(row);
+      this.drawingManager.clearAll();
+      this.drawingManager.draw(row);
+      this.drawingManager.setFitBound([row], row.type == "circle");
+    },
+    //删除热点
+    del(row) {
+      Api.destroy(row.id).then(() => {
+        this.getData();
+      });
     },
   },
   mounted() {

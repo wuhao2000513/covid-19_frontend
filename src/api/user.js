@@ -1,7 +1,7 @@
 import { request } from "@/utils/http.js";
 /**
  * 获取用户列表
- * @param {object}} condition 查询条件
+ * @param {object} condition 查询条件
  */
 export function getUsers(condition) {
   return request.get("/user", {
@@ -33,4 +33,13 @@ export function getRole() {
  */
 export function getAccountState() {
   return request.get("/account-state");
+}
+
+export function addRecord(data) {
+  return request.post("/record", data);
+}
+export function getRecord(condition) {
+  return request.get("/record", {
+    params: condition
+  });
 }

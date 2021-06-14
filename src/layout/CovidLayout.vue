@@ -1,7 +1,7 @@
 <template>
   <div class="full-height flex">
     <div class="left-box full-height flex flex-col">
-      <div class="logo-box">
+      <div class="logo-box" style="color:#fff">
         LOGO
       </div>
       <ul class="flex-grow-1">

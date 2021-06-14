@@ -22,3 +22,11 @@ export function create(data) {
 export function update(id, data) {
   return request.put(`/hotspot/${id}`, data);
 }
+
+/**
+ * 删除hotSpot
+ * @param {string} id 要修改的hotSpot信息
+ */
+export function destroy(id) {
+  return request.delete(`/hotspot/${id}`);
+}

@@ -59,18 +59,18 @@
               class="user-avatar"
             ></el-avatar>
             <p class="username">
-              你好，<br />
+              Hello，<br />
               <span>
                 {{ $store.getters.name }}
               </span>
             </p>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
-            <router-link to="/">
-              <el-dropdown-item>用户信息</el-dropdown-item>
+            <router-link to="/person">
+              <el-dropdown-item>user info</el-dropdown-item>
             </router-link>
             <el-dropdown-item divided @click.native="logout"
-              >退出登录</el-dropdown-item
+              >login out</el-dropdown-item
             >
           </el-dropdown-menu>
         </el-dropdown>
@@ -188,7 +188,6 @@ export default {
     width: 20%;
     .username {
       margin-left: 10px;
-      color: #fff;
     }
     .right-menu-item {
       margin: 0 10px;

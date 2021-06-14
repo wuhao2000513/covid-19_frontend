@@ -18,6 +18,6 @@ export function signout() {
   return request.post("/signout");
 }
 //获取用户
-export function getUser() {
-  return request.get("/getUser?type=system");
+export function getUser(id) {
+  return request.get(`/getUser?id=${id}`);
 }
